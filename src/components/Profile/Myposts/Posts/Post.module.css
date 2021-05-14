@@ -1,0 +1,14 @@
+.imge img {
+    width: 70px;
+    height: auto;
+    border-color:black;
+}
+
+.imge {
+    color: blue;
+    padding-bottom: 10px;
+}
+
+.like {
+    color: red;
+}

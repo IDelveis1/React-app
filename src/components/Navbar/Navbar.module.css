@@ -1,0 +1,40 @@
+.nav {
+  grid-area: b;
+  background-color: rgb(69, 73, 64);
+
+}
+
+.item {
+  color: white;
+  padding: 15px;
+}
+
+.item a {
+  color: white;
+  text-decoration:white;
+}
+
+.item a.active {
+  color: gold;
+}
+
+
+.FriendItem {
+  color: white;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.parent {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+
+}
+
+.parent img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin-top: 30px;
+}

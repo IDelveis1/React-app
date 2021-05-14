@@ -1,0 +1,18 @@
+.header {
+  grid-area: h;
+  background-color:dimgray;
+
+}
+.header img {
+  height: 60px;
+  width: auto;
+}
+
+
+.forlogin {
+  float: right;
+}
+
+.forlogin a {
+  color: white;
+}
