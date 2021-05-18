@@ -104,39 +104,35 @@ export const setFollowingInProgress = (isFatching, userId) => ({ type: SET_FOLLO
 
 
 export const getUser = (currentPage, pageSize) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(setPreloader(true));
         dispatch(setUserCurrentPage(currentPage))
-        UsersAPI.getUser(currentPage, pageSize).then(data => {
+        let data = await UsersAPI.getUser(currentPage, pageSize);
             dispatch(setPreloader(false));
             dispatch(setUsers(data.items))
             dispatch(setUserTotalCount(data.totalCount))
-
-        })
     }
 }
 
 export const follow = (userId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(setFollowingInProgress(true, userId));
-        UsersAPI.follow(userId).then(response => {
+        let response = await UsersAPI.follow(userId);
             if (response.data.resultCode === 0) {
                 dispatch(setFollowingInProgress(false, userId));
                 dispatch(followSuccess(userId))
             }
-        });
 }
 }
 
 export const unfollow = (userId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(setFollowingInProgress(true, userId));
-        UsersAPI.unfollow(userId).then(response => {
+        let response = await UsersAPI.unfollow(userId)
             if (response.data.resultCode === 0) {
                 dispatch(setFollowingInProgress(false, userId));
                 dispatch(unfollowSuccess(userId))
             }
-        });
     }
 }
 

@@ -14,10 +14,10 @@ const ProfileStatusWithHook = (props) => {
         props.updateStatus(status)
     }
 
-    useEffect( () => {
+   /*  useEffect( () => {
         setStatus(props.status)
     }, [props.status])
-
+ */
     const onStatusChange = (e) => {
         setStatus(e.currentTarget.value)
     }
