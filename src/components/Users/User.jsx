@@ -3,10 +3,6 @@ import clas from './Users.module.css'
 import logo from '../../assets/images/man.png'
 import '../../assets/images/loader.css'
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
-import { getUser } from '../Redux/user-reducer';
-import { UsersAPI } from '../../api/api';
-import Paginator from '../common/Paginator/Paginator';
 
 
 

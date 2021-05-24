@@ -11,7 +11,7 @@ const Profile = (props) => {
 
   return (
     <div>
-        <ProfileInfo profile={ props.profile } fullName={ props.fullName } status={props.status} updateStatus={ props.updateStatus }/>
+        <ProfileInfo saveProfileForm={props.saveProfileForm} savePhoto={props.savePhoto} isOwner={props.isOwner} profile={ props.profile } fullName={ props.fullName } status={props.status} updateStatus={ props.updateStatus }/>
           <MypostsContainer />
       </div>
     )

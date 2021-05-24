@@ -4,6 +4,7 @@ const ADD_POST = 'ADD-POST'
 const UPDATE_NEW_TEXT_POST = 'UPDATE-NEW-TEXT-POST'
 const SET_USER_PROFILE = 'SET-USER-PROFILE'
 const SET_STATUS = 'SET-STATUS'
+const SET_NEW_PHOTO = 'SET_NEW_PHOTO'
 
 let initialState = {
     Data: [
@@ -52,6 +53,14 @@ const profileReducer = (state = initialState, action) => {
                     status: action.status
                 }
             )
+        case SET_NEW_PHOTO:
+            return(
+                {
+                    ...state,
+                    profile: {...state.profile,
+                    photos: action.photos}
+                }
+            )    
         default:
             return state;
     }
@@ -65,6 +74,8 @@ export const updateNewTextPostActionCreator = (text) => ({ type: 'UPDATE-NEW-TEX
 export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 
 export const setStatus = (status) => ({ type: SET_STATUS, status });
+
+export const savePhotoSuccess = (photos) => ({ type: SET_NEW_PHOTO, photos });
 
 export const getProfile = (userId) => {
     return async (dispatch) => {
@@ -91,5 +102,25 @@ export const updateStatus = (status) => {
             }
     }
 }
+
+export const savePhoto = (file) => {
+    return async (dispatch) => {
+        let response = await ProfileAPI.savePhoto(file);
+            if (response.data.resultCode === 0) {
+            dispatch(savePhotoSuccess(response.data.data.photos));
+            }
+    }
+}
+
+export const saveProfileForm = (profileForm) => {
+    return async (dispatch, getState) => {
+        const userId = getState().Auth.id
+        let response = await ProfileAPI.saveProfileForm(profileForm);
+            if (response.data.resultCode === 0) {
+            dispatch(getProfile(userId));
+            }
+    }
+}
+
 
 export default profileReducer;
