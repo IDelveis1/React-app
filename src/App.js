@@ -15,7 +15,7 @@ import { initialApp } from '../src/components/Redux/app-reducer';
 import { connect } from 'react-redux';
 import Preloader from './components/common/preloader/preloader';
 import { compose } from 'redux';
-import { withRouter } from 'react-router';
+import { withRouter, Redirect } from 'react-router';
 
 //import DialogsContainer from './components/Dialogs/DialogsContainer';
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'))
@@ -41,6 +41,7 @@ class App extends React.Component {
             return <Suspense fallback={<div>Loading...</div>}>
             <DialogsContainer />
             </Suspense>}}></Route>
+            <Redirect exact from="/" to="/profile" />
             <Route path='/profile/:userId?' render={() => <ProfileContainer />}></Route>
             <Route path='/news' component={News}></Route>
             <Route path='/music' component={Music}></Route>
