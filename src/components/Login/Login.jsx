@@ -11,6 +11,7 @@ import style from '../Formcontrols/Formcontrol.module.css'
 const Input = Element("input");
 
 const LoginForm = (props) => {
+    debugger;
     return (
         <Form onSubmit={props.handleSubmit}>
             <div>
@@ -26,6 +27,10 @@ const LoginForm = (props) => {
             <div>
                 <Field name='rememberMe' component={Input} type='checkbox' ></Field>
             </div>
+            <div>
+                {props.captcha && <img src={props.captcha} />}
+                {props.captcha &&  <Field placeholder='Please captcha' name='captcha' component={Input} ></Field>}
+            </div>
             <button>Login</button>
         </Form>
     )
@@ -36,7 +41,7 @@ const LoginFormRedux = reduxForm({form: 'login'})(LoginForm)
 const Login = (props) => {
     debugger;
     const onSubmit = (formData) => {
-        props.logIn(formData.email, formData.password, formData.rememberMe)
+        props.logIn(formData.email, formData.password, formData.rememberMe, formData.captcha)
     }
 
 if ( props.isAuth) {
@@ -46,13 +51,14 @@ if ( props.isAuth) {
     return (
         <div>
             <h1>LOGIN</h1>
-            <LoginFormRedux onSubmit={onSubmit} />
+            <LoginFormRedux onSubmit={onSubmit} captcha={props.captcha} />
         </div>
     )
 }
 
 const mapStateToProps = (state) => ({
-    isAuth: state.Auth.isAuth
+    isAuth: state.Auth.isAuth,
+    captcha: state.Auth.captcha,
 })
 
 export default connect(mapStateToProps, {logIn})(Login);
