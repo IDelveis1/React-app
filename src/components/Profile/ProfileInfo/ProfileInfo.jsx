@@ -37,7 +37,7 @@ const ProfileInfo = (props) => {
         <ProfileStatusWithHook status={props.status} updateStatus={props.updateStatus} />
         <hr />
         {editMode ?
-          <ProfileDataFormRedux initialValues={props.profile} profile={props.profile} onSubmit={onSubmit} />
+          <ProfileDataForm initialValues={props.profile} profile={props.profile} onSubmit={onSubmit} />
           : 
           <ProfileData profile={props.profile} isOwner={props.isOwner} goToEditMode={() => setEditMode(true)} />
         }

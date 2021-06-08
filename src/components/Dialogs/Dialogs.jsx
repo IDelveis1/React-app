@@ -3,9 +3,10 @@ import { Redirect } from 'react-router';
 import DialogItem from './DialogItem/DialogItem';
 import s from './Dialogs.module.css';
 import Message from './Messages/Messages';
-import {Form, Field, reduxForm} from 'redux-form';
 import { Element } from '../Formcontrols/Formcontrols';
 import { maxLengthCreator, required } from '../../utils/validators/validators';
+import { Formik, Field, Form } from "formik";
+import * as Yup from 'yup'
 
 
 const Textarea = Element('textarea')
@@ -39,7 +40,7 @@ const Dialogs = (props) => {
             </div>
             <div className={s.Message}>
                 {MessageElements}
-                <DialogFormRedux onSubmit={ sendMessage } />
+                <DialogForm onSubmit={ sendMessage } />
             </div>
         </div>
     )
@@ -47,18 +48,45 @@ const Dialogs = (props) => {
 
 const maxLength50 = maxLengthCreator(50)
 
+const DisplayingErrorMessagesSchema = Yup.object().shape({
+    newMessageBody: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+  });
+
 const DialogForm = (props) => {
     return (
-        <Form onSubmit={props.handleSubmit}>
+       /*  <Formik onSubmit={props.handleSubmit}>
+            <Form>
             <div>
                 <Field name='newMessageBody' placeholder='Type tour message' component={Textarea} validate={[required, maxLength50]}></Field>
                 <button>Send</button>
             </div>
-        </Form>
+            </Form>
+        </Formik> */
+        <Formik
+        initialValues={{ newMessageBody: '' }}
+        onSubmit={props.onSubmit}
+        validationSchema={ DisplayingErrorMessagesSchema }
+      >
+        {({ errors, touched }) => (
+         <Form>
+             <div className={s.formControl + " " + (touched.newMessageBody && errors.newMessageBody ? s.error : "")}>
+           <Field name="newMessageBody" type='text' placeholder="Type here your text"/>
+           </div>
+           {/* If this field has been touched, and it contains an error, display it
+            */}
+           {touched.newMessageBody && errors.newMessageBody && <div>{errors.newMessageBody}</div>}
+           <button type="submit">Submit</button>
+         </Form>
+      
+    )
+        }
+        </Formik>
     )
 }
 
-const DialogFormRedux = reduxForm({ form: 'messageAddDialogForm' })(DialogForm)
 
 
 

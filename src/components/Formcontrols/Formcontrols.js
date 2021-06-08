@@ -1,10 +1,11 @@
 import React from 'react';
 import styles from './Formcontrol.module.css'
-import {Field} from 'redux-form'
+import {Field} from "formik";
 
 
 
 export const Element = Element => ({ input, meta, ...props }) => {
+  debugger;
     const hasError = meta.touched && meta.error;
     return (
       <div className={ styles.formControl + " " + (hasError ? styles.error : "") }>

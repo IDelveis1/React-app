@@ -4,4 +4,13 @@
 
 }
 
+.formControl.error {
+    border: solid red 2px;
+}
 
+
+.formSummeryError {
+    border: solid red 2px;
+    padding: 5px;
+    color: red;
+}
