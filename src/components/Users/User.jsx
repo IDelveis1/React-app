@@ -3,8 +3,14 @@ import clas from './Users.module.css'
 import logo from '../../assets/images/man.png'
 import '../../assets/images/loader.css'
 import { NavLink } from 'react-router-dom';
+import { UsersType } from '../Redux/user-reducer'
 
-
+/* type Props = {
+    users: Array<UsersType>
+    followingInProgress: Array<number>
+    unfollow: (id: number) => void
+    follow: (id: number) => void
+} */
 
 const User = (props) => {
     return (
