@@ -1,5 +1,8 @@
+import { AppStateType } from './redux-store';
+import { ThunkAction } from "redux-thunk"
 import { UsersAPI } from "../../api/api"
-import type {PhotosType}  from "./profile-reducer"
+import { Dispatch } from 'react';
+import { PhotosType } from '../../types/types';
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -23,13 +26,13 @@ let initialState = {
     totalUsersCount: 0 as number,
     currentPage: 1 as number,
     isFatching: false as boolean,
-    followingInProgress: [] as Array<number>,
+    followingInProgress: [] as number[]
 };
 
 type InitialStateType = typeof initialState
 
 
-const usersReducer = (state: InitialStateType = initialState, action: any): InitialStateType => {
+const usersReducer = (state: InitialStateType = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case FOLLOW:
             return (
@@ -90,7 +93,7 @@ const usersReducer = (state: InitialStateType = initialState, action: any): Init
                     ...state,
                     followingInProgress: action.isFatching ?
                         [...state.followingInProgress, action.userId]
-                        : [state.followingInProgress.filter(id => id != action.userId)]
+                        : state.followingInProgress.filter(id => id != action.userId)
                 }
             )
         default:
@@ -148,9 +151,13 @@ type setFollowingInProgressType = {
 
 export const setFollowingInProgress = (isFatching: boolean, userId: number): setFollowingInProgressType => ({ type: SET_FOLLOWING_IN_PROGRESS, isFatching, userId })
 
+type ActionsTypes = FollowSuccessType | setFollowingInProgressType | SetPreloaderType | setUserTotalCountType | SetUserCurrentPageType |
+SetUsersType | UnfollowSuccessType 
 
-export const getUser = (currentPage: number, pageSize: number) => {
-    return async (dispatch: any) => {
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+
+export const getUser = (currentPage: number, pageSize: number): ThunkType => {
+    return async (dispatch: Dispatch<ActionsTypes>) => {
         dispatch(setPreloader(true));
         dispatch(setUserCurrentPage(currentPage))
         let data = await UsersAPI.getUser(currentPage, pageSize);
@@ -160,19 +167,20 @@ export const getUser = (currentPage: number, pageSize: number) => {
     }
 }
 
-export const follow = (userId: number) => {
-    return async (dispatch: any) => {
+export const follow = (userId: number): ThunkType => {
+    return async (dispatch: Dispatch<ActionsTypes>) => {
         dispatch(setFollowingInProgress(true, userId));
         let response = await UsersAPI.follow(userId);
             if (response.data.resultCode === 0) {
                 dispatch(setFollowingInProgress(false, userId));
                 dispatch(followSuccess(userId))
+
             }
 }
 }
 
-export const unfollow = (userId: number) => {
-    return async (dispatch: any) => {
+export const unfollow = (userId: number): ThunkType => {
+    return async (dispatch: Dispatch<ActionsTypes>) => {
         dispatch(setFollowingInProgress(true, userId));
         let response = await UsersAPI.unfollow(userId)
             if (response.data.resultCode === 0) {

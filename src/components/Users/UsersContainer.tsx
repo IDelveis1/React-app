@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { followSuccess, setPreloader, setUserCurrentPage, setUsers, setUserTotalCount, unfollowSuccess, setFollowingInProgress, getUser, follow, unfollow, UsersType } from '../Redux/user-reducer';
+import { getUser, follow, unfollow, UsersType } from '../Redux/user-reducer';
 import Users from './Users'
 import Preloader from '../common/preloader/preloader';
 import { getPageSize, getTotalUsersCount, getCurrentPage, getIsFatching, getFollowingInProgress, getUsersSuper, getUsera } from '../Redux/users-selectors'
@@ -60,22 +60,7 @@ class UsersAPI extends React.Component<Props> {
     }
 }
 
-
-/* let mapStateToProps = (state) => {
-    return (
-        {
-            users: state.UsersPage.users,
-            pageSize: state.UsersPage.pageSize,
-            totalUsersCount: state.UsersPage.totalUsersCount,
-            currentPage: state.UsersPage.currentPage,
-            isFatching: state.UsersPage.isFatching,
-            followingInProgress: state.UsersPage.followingInProgress,
-
-        }
-    )
-} */
-
-let mapStateToProps = (state: AppStateType) => {
+let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     return (
         {users: getUsera(state),
             pageSize: getPageSize(state),
@@ -87,33 +72,6 @@ let mapStateToProps = (state: AppStateType) => {
     )
 }
 
-
-/* let mapDispatchToProps = (dispatch) => {
-    return (
-        {
-            follow: (userId) => {
-                dispatch(followAC(userId))
-            },
-            unfollow: (userId) => {
-                dispatch(unfollowAC(userId))
-            },
-            setUsers: (users) => {
-                dispatch(setUsersAC(users))
-            },
-            setUserCurrentPage: (currentPage) => {
-                dispatch(setUserCurrentPageAC(currentPage))
-            },
-            setUserTotalCount: (totalCount) => {
-                dispatch(setUserTotalCountAC(totalCount))
-            },
-            setPreloader: (isFatching) => {
-                dispatch(setPreloaderAC(isFatching))
-            }
-        }
-    )
-
-}
- */
 
 const UsersContainer = connect<mapStateToPropsType, mapDispatchToPropsType, OwnPropsType, AppStateType>(mapStateToProps,
     {

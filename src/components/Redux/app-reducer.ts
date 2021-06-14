@@ -1,4 +1,3 @@
-import { AuthAPI } from "../../api/api";
 import { getAuth } from "./auth-reducer";
 
 const INITIALIZED_SUCCESS = 'INITIALIZED_SUCCESS'
@@ -9,7 +8,7 @@ let initialState = {
 
 export type initialStateType = typeof initialState
 
-const appReducer = (state: initialStateType = initialState, action: any): initialStateType => {
+const appReducer = (state: initialStateType = initialState, action: ActionsTypes): initialStateType => {
     switch (action.type) {
 
         case INITIALIZED_SUCCESS:
@@ -28,6 +27,8 @@ const appReducer = (state: initialStateType = initialState, action: any): initia
 type initializedSuccessActionType = {
     type: typeof INITIALIZED_SUCCESS
 }
+
+type ActionsTypes = initializedSuccessActionType
 
 export const initializedSuccess = (): initializedSuccessActionType => ({ type: INITIALIZED_SUCCESS });
 
