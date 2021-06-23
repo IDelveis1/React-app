@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setUserProfile } from '../Redux/profile-reducer';
+import { actions } from '../Redux/profile-reducer';
 import axios from 'axios';
 import Profile from './Profile';
 import { Redirect, withRouter } from 'react-router';
@@ -58,7 +58,7 @@ const mapStateToProps = (state) => ({
 })
 
 export default compose(
-  connect(mapStateToProps, {saveProfileForm, savePhoto, setUserProfile, getProfile, getStatus, updateStatus}),
+  connect(mapStateToProps, {saveProfileForm, savePhoto, setUserProfile: actions.setUserProfile, getProfile, getStatus, updateStatus}),
   withRouter,
   withAuthRedirect
 )(ProfileAPI)
