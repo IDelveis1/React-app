@@ -1,10 +1,10 @@
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { Action, applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import authReducer from './auth-reducer';
 import dialogReducer from './dialog-reducer';
 import navbarReducer from './navbar-reducer';
 import profileReducer from './profile-reducer';
 import usersReducer from './user-reducer';
-import thunkMiddleware from 'redux-thunk';
+import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 import appReducer from './app-reducer';
 
 let rootReducer = combineReducers({
@@ -19,6 +19,9 @@ let rootReducer = combineReducers({
 
 type RootReducerType = typeof rootReducer
 export type AppStateType = ReturnType<RootReducerType>
+
+export type BaseThunkType<AT extends Action = Action, P = Promise<void>> = ThunkAction<P, AppStateType, unknown, AT>
+
 
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; 

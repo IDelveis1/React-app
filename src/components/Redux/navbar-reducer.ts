@@ -1,4 +1,4 @@
-type FriendDataType = {
+export type FriendDataType = {
     id: number
     name: string
 }
@@ -11,10 +11,12 @@ let initialState = {
 ] as Array<FriendDataType>,
 }
 
-type initialStateType = typeof initialState
+
 
 const navbarReducer = (state: initialStateType = initialState, action: any): initialStateType => {
     return state;
 }
 
 export default navbarReducer;
+
+type initialStateType = typeof initialState

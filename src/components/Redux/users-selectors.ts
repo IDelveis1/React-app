@@ -27,7 +27,10 @@ export const getIsFatching = (state: AppStateType) => {
     return state.UsersPage.isFatching
 }
 
-
 export const getFollowingInProgress = (state: AppStateType) => {
     return state.UsersPage.followingInProgress
+}
+
+export const getUsersFilter = (state: AppStateType) => {
+    return state.UsersPage.filter
 }
