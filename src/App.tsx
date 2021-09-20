@@ -22,6 +22,10 @@ const DialogsContainer = React.lazy(
   () => import("./components/Dialogs/DialogsContainer")
 );
 
+const ChatPage = React.lazy(
+  () => import("./components/pages/ChatPage/ChatPage")
+);
+
 type Props = {
   initialApp: () => void;
   initialized: boolean;
@@ -29,6 +33,7 @@ type Props = {
 
 const SuspendedDialogs = withSuspense(DialogsContainer);
 const SuspendedProfile = withSuspense(ProfileContainer);
+const SuspendedChatPage = withSuspense(ChatPage);
 
 class App extends React.Component<Props> {
   componentDidMount() {
@@ -56,6 +61,7 @@ class App extends React.Component<Props> {
           <Route path="/settings" component={Settings}></Route>
           <Route path="/users" render={() => <UsersContainer />}></Route>
           <Route path="/login" render={() => <Login />}></Route>
+          <Route path="/chat" render={() => <SuspendedChatPage />}></Route>
         </div>
       </div>
     );

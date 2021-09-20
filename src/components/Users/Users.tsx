@@ -16,12 +16,16 @@ type Props = {
   unfollow: (id: number) => void;
   follow: (id: number) => void;
   onFilterChanged: (filter: FilterType) => void;
+  filter: FilterType;
 };
 
 const Users: React.FC<Props> = (props) => {
   return (
     <div className={clas.use}>
-      <UserSearchForm onFilterChanged={props.onFilterChanged} />
+      <UserSearchForm
+        filter={props.filter}
+        onFilterChanged={props.onFilterChanged}
+      />
       <Paginator
         totalItemsCount={props.totalUsersCount}
         pageSize={props.pageSize}

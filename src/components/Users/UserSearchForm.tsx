@@ -1,20 +1,39 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
+import { FileWatcherEventKind } from "typescript";
 import { FilterType } from "../Redux/user-reducer";
 
 type Props = {
   onFilterChanged: (filter: FilterType) => void;
+  filter: FilterType;
+};
+
+type ValuesType = {
+  term: string;
+  friend: string;
 };
 
 const UserSearchForm: React.FC<Props> = (props) => {
-  const submit = (values: FilterType, { setSubmitting }: any) => {
-    props.onFilterChanged(values);
+  const submit = (values: ValuesType, { setSubmitting }: any) => {
+    const filter = {
+      term: values.term,
+      friend:
+        values.friend === null ? null : values.friend === "true" ? true : false,
+    };
+    props.onFilterChanged(filter);
     setSubmitting(false);
   };
 
   return (
     <div>
-      <Formik initialValues={{ term: "", friend: null }} onSubmit={submit}>
+      <Formik
+        enableReinitialize
+        initialValues={{
+          term: props.filter.term,
+          friend: String(props.filter.friend) as string,
+        }}
+        onSubmit={submit}
+      >
         {({
           values,
           handleChange,

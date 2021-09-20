@@ -32,8 +32,8 @@ const NavBar: React.FC<PropsType> = (props) => {
           </NavLink>
         </div>
         <div>
-          <NavLink to="/news" activeClassName={clas.active}>
-            News
+          <NavLink to="/chat" activeClassName={clas.active}>
+            Chat
           </NavLink>
         </div>
         <div>

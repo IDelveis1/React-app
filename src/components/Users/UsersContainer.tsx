@@ -19,6 +19,8 @@ import {
   getUsersFilter,
 } from "../Redux/users-selectors";
 import { AppStateType } from "../Redux/redux-store";
+import { compose } from "redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 type mapStateToPropsType = {
   isFatching: boolean;
@@ -38,15 +40,42 @@ type mapDispatchToPropsType = {
 
 type OwnPropsType = {};
 
-type Props = mapStateToPropsType & mapDispatchToPropsType & OwnPropsType;
+type PathParamsType = {
+  userId: string;
+};
+
+type Props = mapStateToPropsType &
+  mapDispatchToPropsType &
+  OwnPropsType &
+  RouteComponentProps<PathParamsType>;
 
 class UsersAPI extends React.Component<Props> {
   componentDidMount = () => {
-    this.props.getUser(
-      this.props.currentPage,
-      this.props.pageSize,
-      this.props.filter
-    );
+    const queryString = require("query-string");
+    const parsed = queryString.parse(this.props.location.search);
+    console.log(parsed);
+
+    let actualPage = this.props.currentPage;
+    let actualFilter = this.props.filter;
+    if (!!parsed.page) actualPage = +parsed.page;
+    if (!!parsed.term) actualFilter = { ...actualFilter, term: parsed.term };
+    if (!!parsed.friend)
+      actualFilter = {
+        ...actualFilter,
+        friend:
+          parsed.friend === "null"
+            ? null
+            : parsed.friend === "false"
+            ? false
+            : true,
+      };
+
+    this.props.getUser(actualPage, this.props.pageSize, actualFilter);
+
+    this.props.history.push({
+      pathname: "/users",
+      search: `?term=${this.props.filter.term}&friend=${this.props.filter.friend}&page=${this.props.currentPage}`,
+    });
   };
 
   onPageChanged = (pageNumber: number) => {
@@ -56,15 +85,26 @@ class UsersAPI extends React.Component<Props> {
   onFilterChanged = (values: FilterType) => {
     let { pageSize } = this.props;
     this.props.getUser(1, pageSize, values);
-    console.log("fafa");
+  };
+
+  componentDidUpdate = (prevProps: Props) => {
+    if (
+      this.props.filter !== prevProps.filter ||
+      this.props.currentPage !== prevProps.currentPage
+    ) {
+      this.props.history.push({
+        pathname: "/users",
+        search: `?term=${this.props.filter.term}&friend=${this.props.filter.friend}&page=${this.props.currentPage}`,
+      });
+    }
   };
 
   render = () => {
     return (
       <div>
         <div>{this.props.isFatching ? <Preloader /> : null}</div>
-
         <Users
+          filter={this.props.filter}
           onFilterChanged={this.onFilterChanged}
           totalUsersCount={this.props.totalUsersCount}
           pageSize={this.props.pageSize}
@@ -92,15 +132,18 @@ let mapStateToProps = (state: AppStateType): mapStateToPropsType => {
   };
 };
 
-const UsersContainer = connect<
-  mapStateToPropsType,
-  mapDispatchToPropsType,
-  OwnPropsType,
-  AppStateType
->(mapStateToProps, {
-  getUser,
-  follow,
-  unfollow,
-})(UsersAPI);
+const UsersContainer = compose<React.ComponentType>(
+  connect<
+    mapStateToPropsType,
+    mapDispatchToPropsType,
+    OwnPropsType,
+    AppStateType
+  >(mapStateToProps, {
+    getUser,
+    follow,
+    unfollow,
+  }),
+  withRouter
+)(UsersAPI);
 
 export default UsersContainer;

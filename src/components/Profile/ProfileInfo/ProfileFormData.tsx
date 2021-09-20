@@ -1,7 +1,5 @@
 import React from "react";
 import clas from "./ProfileInfo.module.css";
-import { Contact } from "./ProfileInfo";
-import { createField, Element } from "../../Formcontrols/Formcontrols";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { ProfileType } from "../../../types/types";
